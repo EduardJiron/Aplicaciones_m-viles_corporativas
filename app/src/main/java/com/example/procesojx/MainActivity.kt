@@ -18,11 +18,15 @@ class MainActivity : AppCompatActivity() {
 
         val button: Button = findViewById(R.id.button)
         val button2: Button = findViewById(R.id.button2)
+        val button3: Button = findViewById(R.id.button4)
         button.setOnClickListener {
-            obtenerRepositorios("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")
+            obtenerRepositorios("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")
         }
         button2.setOnClickListener {
-            crearRepositorio("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")
+            crearRepositorio("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")
+        }
+        button3.setOnClickListener {
+            eliminarRepositorio("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", "NuevoRepositorio2", "EduardJiron")
         }
     }
 
@@ -69,6 +73,20 @@ class MainActivity : AppCompatActivity() {
 
                 }
             }
+    }
+    fun eliminarRepositorio(token: String, nombreRepo: String,user:String) {
+        val url = "https://api.github.com/repos/$user/$nombreRepo"
+        val headers = mapOf("Authorization" to "token $token", "Content-Type" to "application/json")
+
+        Fuel.delete(url)
+            .header(headers)
+            .responseString { _, response, result ->
+                when (response.statusCode) {
+                    204 -> println("Repositorio eliminado exitosamente")
+                    else -> println("Error al eliminar el repositorio: ${response.statusCode}")
+                }
+            }
+
     }
 }
 
